@@ -870,12 +870,18 @@
   const copyLinkBtn = document.getElementById("copyLinkBtn");
   const startOverBtn = document.getElementById("startOverBtn");
 
-  // Start game (safe on GitHub Pages)
+  // ---- START BUTTON (single source of truth) ----
+function startGame(){
+  introScreen.classList.add("hidden");
+  gameContainer.classList.remove("hidden");
+  window.scrollTo(0,0);
+}
+
 if (startBtn){
-  startBtn.addEventListener("click", ()=>{
-    introScreen.classList.add("hidden");
-    gameContainer.classList.remove("hidden");
-    window.scrollTo(0,0);
+  startBtn.onclick = null; // clears any inline onclick
+  startBtn.addEventListener("click", (e)=>{
+    e.preventDefault();
+    startGame();
   });
 }
 
