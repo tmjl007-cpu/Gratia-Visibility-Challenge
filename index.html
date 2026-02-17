@@ -24,17 +24,21 @@
     *{ box-sizing:border-box; }
     html,body{ height:100%; }
 
-    body{
-      margin:0;
-      font-family: system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial;
-      background: radial-gradient(1200px 600px at 50% 20%, #1C4C8F 0%, var(--navy) 60%);
-      color: var(--white);
-      min-height:100vh;
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      padding:24px;
-    }
+    html, body { height: 100%; }
+
+body{
+  margin:0;
+  font-family: system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial;
+  background: radial-gradient(1200px 600px at 50% 20%, #1C4C8F 0%, var(--navy) 60%);
+  color: var(--white);
+
+  /* ✅ don’t center the app vertically */
+  display:block;
+
+  /* ✅ safe area for notches + allow full-height layouts */
+  padding: env(safe-area-inset-top) env(safe-area-inset-right)
+           env(safe-area-inset-bottom) env(safe-area-inset-left);
+}
 
     .hidden{ display:none !important; }
 
@@ -96,13 +100,20 @@
 
     /* ---------- Card ---------- */
     .panel{
-      background: var(--light-blue);
-      border:1px solid rgba(11,31,77,.12);
-      border-radius:18px;
-      padding:20px;
-      color: var(--text);
-      box-shadow: 0 10px 26px rgba(0,0,0,.10);
-    }
+  width:100%;
+  border-radius:18px;
+  padding:18px;
+  display:flex;
+  flex-direction:column;
+
+  /* ✅ fills the viewport */
+  min-height: 100svh;
+
+  background: var(--light-blue);
+  border:1px solid rgba(11,31,77,.12);
+  color: var(--text);
+  box-shadow: 0 10px 26px rgba(0,0,0,.10);
+}
     .h{
       font-weight:950;
       letter-spacing:.2px;
@@ -118,9 +129,13 @@
     }
 
     /* ---------- Page 1: Game-only layout ---------- */
-    .gameOnly{
-      width:min(980px, 100%);
-    }
+   .gameOnly{
+  width: 100%;
+  max-width: 980px;
+  margin: 0 auto;
+  min-height: 100svh; /* ✅ iOS-safe viewport height */
+  display:flex;
+}
 
     .gameHeader{
       text-align:left;
