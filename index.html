@@ -1179,24 +1179,35 @@ That’s visibility.` },
     function msg(text){ if (msgEl) msgEl.textContent = text || ""; }
 
     function renderPicked(){
-      const n = picked.length;
-      const pct = Math.round((n / MAX) * 100);
+  const n = picked.length;
+  const pct = Math.round((n / MAX) * 100);
 
-      if (progressFill) progressFill.style.width = pct + "%";
-      if (progressText) progressText.textContent = `${n} / ${MAX} selected`;
+  if (progressFill) progressFill.style.width = pct + "%";
+  if (progressText) progressText.textContent = `${n} / ${MAX} selected`;
 
-      // update aria
-      const bar = progressFill?.parentElement;
-      if (bar && bar.getAttribute("role") === "progressbar") {
-        bar.setAttribute("aria-valuenow", String(n));
-      }
+  const bar = progressFill?.parentElement;
+  if (bar && bar.getAttribute("role") === "progressbar") {
+    bar.setAttribute("aria-valuenow", String(n));
+  }
 
-      if (continueBtn) continueBtn.disabled = (n !== MAX);
+  if (continueBtn) continueBtn.disabled = (n !== MAX);
 
-      if (n === 0) msg("Tap 3 priorities to unlock your Spotlight.");
-      else if (n < MAX) msg(`Tap ${MAX - n} more to continue.`);
-      else msg("Unlocked. Hit Continue!");
-    }
+  if (n === 0) {
+    msg("Tap 3 priorities to unlock your Spotlight.");
+  } 
+  else if (n < MAX) {
+    msg(`Tap ${MAX - n} more to continue.`);
+  } 
+  else if (n === MAX){
+    msg("Analyzing your priorities...");
+
+    stopBubbleLoop();
+
+    setTimeout(()=>{
+      showStory();
+    }, 1400);
+  }
+}
 
     function addPick(id){
       if (picked.includes(id)) return;
