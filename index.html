@@ -1473,23 +1473,44 @@ function unlockAudio(){
 function playPop(){
   if (!popCtx) return;
 
-  // short "blip" pop (no external file)
-  const o = popCtx.createOscillator();
-  const g = popCtx.createGain();
+  const now = popCtx.currentTime;
 
-  o.type = "triangle";
-  o.frequency.setValueAtTime(220, popCtx.currentTime);
-  o.frequency.exponentialRampToValueAtTime(80, popCtx.currentTime + 0.06);
+  // --- Sharp crack (high snap) ---
+  const snap = popCtx.createOscillator();
+  const snapGain = popCtx.createGain();
 
-  g.gain.setValueAtTime(0.0001, popCtx.currentTime);
-  g.gain.exponentialRampToValueAtTime(0.25, popCtx.currentTime + 0.01);
-  g.gain.exponentialRampToValueAtTime(0.0001, popCtx.currentTime + 0.09);
+  snap.type = "square";
+  snap.frequency.setValueAtTime(600, now);
+  snap.frequency.exponentialRampToValueAtTime(120, now + 0.05);
 
-  o.connect(g);
-  g.connect(popCtx.destination);
+  snapGain.gain.setValueAtTime(0.0001, now);
+  snapGain.gain.exponentialRampToValueAtTime(0.6, now + 0.005); // louder
+  snapGain.gain.exponentialRampToValueAtTime(0.0001, now + 0.08);
 
-  o.start();
-  o.stop(popCtx.currentTime + 0.1);
+  snap.connect(snapGain);
+  snapGain.connect(popCtx.destination);
+
+  snap.start(now);
+  snap.stop(now + 0.1);
+
+
+  // --- Low thump body ---
+  const thump = popCtx.createOscillator();
+  const thumpGain = popCtx.createGain();
+
+  thump.type = "triangle";
+  thump.frequency.setValueAtTime(120, now);
+  thump.frequency.exponentialRampToValueAtTime(60, now + 0.12);
+
+  thumpGain.gain.setValueAtTime(0.0001, now);
+  thumpGain.gain.exponentialRampToValueAtTime(0.4, now + 0.02);
+  thumpGain.gain.exponentialRampToValueAtTime(0.0001, now + 0.18);
+
+  thump.connect(thumpGain);
+  thumpGain.connect(popCtx.destination);
+
+  thump.start(now);
+  thump.stop(now + 0.2);
 }
 
 /* ---------- Burst (BIGGER + RADIANT: dots + stars + flash) ---------- */
