@@ -1105,6 +1105,24 @@ That’s visibility.` },
     }
 
     // ---------- Bubble visuals ----------
+    function applyPriorityColor(el, id){
+  el.classList.remove(
+    "v-magenta","v-blue","v-orange",
+    "c-px","c-quality","c-retention",
+    "c-onboarding","c-culture","c-staffing","c-default"
+  );
+
+  const map = {
+    px: "c-px",
+    quality: "c-quality",
+    retention: "c-retention",
+    onboarding: "c-onboarding",
+    culture: "c-culture",
+    staffing: "c-staffing",
+  };
+
+  el.classList.add(map[id] || "c-default");
+}
    // ✅ One bright color per priority
 const priorityClass = {
   px:        "c-px",
@@ -1224,7 +1242,6 @@ el.addEventListener("touchend", (e)=>{ e.preventDefault(); pop(); }, { passive:f
             );
 
             b.x = nx;
-            applyVariant(b.el);
           }
 
           b.el.style.transform = `translate3d(${b.x}px, ${b.y}px, 0)`;
